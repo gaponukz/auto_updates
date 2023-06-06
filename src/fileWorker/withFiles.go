@@ -14,10 +14,7 @@ func RemoveNotEmptyFolder(folderPath string) error {
 		}
 
 		if !info.IsDir() {
-			err = os.RemoveAll(path)
-			if err != nil {
-				return err
-			}
+			os.RemoveAll(path)
 		}
 
 		return nil
@@ -58,15 +55,9 @@ func MoveFiles(sourceDir string, destDir string) error {
 		destPath := filepath.Join(destDir, relPath)
 
 		if info.IsDir() {
-			err = os.MkdirAll(destPath, info.Mode())
-			if err != nil {
-				return err
-			}
+			os.MkdirAll(destPath, info.Mode())
 		} else {
-			err = moveFile(path, destPath)
-			if err != nil {
-				return err
-			}
+			moveFile(path, destPath)
 		}
 
 		return nil
@@ -102,10 +93,7 @@ func moveFile(sourcePath string, destPath string) error {
 		return err
 	}
 
-	err = os.Remove(sourcePath)
-	if err != nil {
-		return err
-	}
+	os.Remove(sourcePath)
 
 	return nil
 }
