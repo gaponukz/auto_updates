@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"updates/src/fileWorker"
 	"updates/src/runner"
 	"updates/src/versions"
 )
@@ -26,6 +27,21 @@ func main() {
 
 	if currentVersion.IsGreaterThan(localVersion) {
 		runner.RunUntilComplete("curl", "-0", "https://github.com/gaponukz/romregam-updates/archive/refs/heads/main.zip", "-LO", "main.zip")
+		err := fileWorker.Unzip("main.zip", "main")
+
+		if err != nil {
+			fmt.Println("Couldn't unpack archive", err.Error())
+			return
+		}
+
+		err = fileWorker.MoveFiles("main/romregam-updates-main", "")
+		if err != nil {
+			fmt.Println("Couldn't unpack archive", err.Error())
+			return
+		}
+
+		fileWorker.RemoveNotEmptyFolder("main")
+		fileWorker.RemoveFile("main.zip")
 	}
 
 	runner.RunInBackground("python3", "script.py")
