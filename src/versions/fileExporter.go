@@ -19,3 +19,7 @@ func (exporter FileVersionExporter) Load() (Version, error) {
 
 	return NewVersion(string(content))
 }
+
+func (exporter FileVersionExporter) Set(v Version) error {
+	return os.WriteFile(exporter.filename, []byte(v.String()), 0644)
+}

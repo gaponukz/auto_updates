@@ -14,6 +14,7 @@ type Version struct {
 
 type IVersionExporter interface {
 	Load() (Version, error)
+	Set(Version) error
 }
 
 func NewVersion(version string) (Version, error) {
