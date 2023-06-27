@@ -19,6 +19,8 @@ type Service struct {
 }
 
 func (service *Service) Run() error {
+	defer runner.RunInBackground(service.RunProgrammArgs[0], service.RunProgrammArgs[1:]...)
+
 	localVersion, err := service.LockalVersionExporter.Load()
 	if err != nil {
 		fmt.Println("Couldn't parse version from file", err.Error())
@@ -51,7 +53,6 @@ func (service *Service) Run() error {
 	fileWorker.RemoveNotEmptyFolder("main")
 	fileWorker.RemoveFile(filename)
 
-	runner.RunInBackground(service.RunProgrammArgs[0], service.RunProgrammArgs[1:]...)
 	return nil
 }
 
